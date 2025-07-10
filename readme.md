@@ -1,24 +1,29 @@
 # 🪙 Octra Wallet CLI
 
-A lightweight CLI tool for generating and managing **Octra blockchain wallets**, checking balances, and sending basic transactions.
+A simple CLI tool for generating and managing Octra blockchain wallets. Create wallets with mnemonic phrases, check balances, and send 0.01 OCT transactions directly from the terminal.
+
+---
 
 ## 📦 Features
 
-- Generate new wallets with mnemonic phrases
-- Save wallet data securely to a local JSON file
-- View wallet balance and nonce
-- Send fixed 0.01 OCT transfers via RPC
-- Simple interactive CLI with menu prompts
+- Generate new wallets with mnemonic seed phrases
+- Save wallet data securely as `.json` files
+- Check wallet balance and nonce via RPC
+- Send fixed 0.01 OCT transactions
+- Interactive terminal menu
 
 ---
 
 ## 📁 Project Structure
 
-```bash
+```
+
 .
-├── generate.js   # Wallet generator script
-├── index.js      # CLI interface for balance & send
-├── wallets/      # Folder where generated wallets are saved
+├── generate.js            # Wallet generator
+├── index.js               # CLI wallet interface
+├── wallet.json.example    # Sample wallet file
+├── wallets/               # Folder for generated wallets
+
 ````
 
 ---
@@ -28,9 +33,9 @@ A lightweight CLI tool for generating and managing **Octra blockchain wallets**,
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/octra-wallet-cli.git
-cd octra-wallet-cli
-```
+git clone https://github.com/pilarxyz/octra-cli.git
+cd octra-cli
+````
 
 ### 2. Install dependencies
 
@@ -38,74 +43,96 @@ cd octra-wallet-cli
 npm install
 ```
 
-Dependencies used:
+---
 
-* `bip39` – mnemonic generation
-* `tweetnacl` – cryptographic signing
-* `inquirer` – CLI prompts
-* `ora` – loading spinners
-* `chalk` – colored output
+## 🔐 Setup Wallet File
 
-### 3. Generate a wallet
+Before using the CLI, you need to set up a wallet file.
+
+### Step 1: Copy the example
+
+```bash
+cp wallet.json.example wallet.json
+```
+
+### Step 2: Fill in the details
+
+Open `wallet.json` and update the values:
+
+```json
+{
+  "priv": "your-private-key-in-base64",
+  "addr": "your-wallet-address",
+  "rpc": "https://octra.network"
+}
+```
+
+You can get these values by running the wallet generator:
 
 ```bash
 node generate.js
 ```
 
-This will print the wallet info and optionally save it to `wallets/wallet-XXXXXX.json`.
+Then copy the generated private key and address into `wallet.json`.
 
-### 4. Use the CLI
+### Step 3 (Optional): Move wallet file to home directory
 
-Make sure you have a wallet JSON file saved as:
+To make the CLI detect the wallet globally:
 
-* `~/.octra/wallet.json` (preferred), or
-* `./wallet.json` (fallback)
+```bash
+mkdir -p ~/.octra
+mv wallet.json ~/.octra/wallet.json
+```
 
-Then run:
+The CLI will look for the wallet in `~/.octra/wallet.json` first, and fall back to `./wallet.json`.
+
+---
+
+## 🧪 How to Use
+
+### Generate a Wallet
+
+```bash
+node generate.js
+```
+
+This prints wallet information and optionally saves it to the `wallets/` folder.
+
+### Start the CLI
 
 ```bash
 node index.js
 ```
 
-Use the menu to:
+You’ll see an interactive menu with options:
 
-* View wallet balance and nonce
-* Send 0.01 OCT to another address
-
----
-
-## 🔐 Security
-
-* Private keys are stored in Base64 format within JSON files.
-* Ensure you handle your mnemonic and private key **confidentially**.
-* Avoid committing any wallet files to GitHub!
+* **Balance**: Check current balance and nonce
+* **Send 0.01 OCT**: Enter recipient address to send a fixed amount
+* **Exit**: Quit the CLI
 
 ---
 
-## 📡 RPC
+## 📡 RPC Endpoint
 
-The CLI uses the following Octra RPC endpoint by default:
+By default, the CLI uses the following RPC:
 
 ```
 https://octra.network
 ```
 
-You can change this in your `wallet.json` under the `rpc` field.
+You can change this in your `wallet.json` file under the `rpc` field.
 
 ---
 
-## 🛠 Example `wallet.json`
+## 🛡️ Security
 
-```json
-{
-  "priv": "base64-private-key",
-  "addr": "oct...",
-  "rpc": "https://octra.network"
-}
-```
+* Private keys are stored locally in Base64 format.
+* Never share your `wallet.json` or mnemonic with anyone.
+* Do **not** commit real wallet files to GitHub.
+* Consider encrypting or storing them in secure locations.
 
 ---
 
-## ✅ License
+## 📄 License
 
-MIT – use freely, no guarantees. Contributions welcome!
+MIT – free to use, modify, and distribute. No warranties included.

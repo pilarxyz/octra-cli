@@ -1,5 +1,5 @@
 {
-  "priv": "xxxxx",
-  "addr": "octxx",
+  "priv": "your-private-key-in-base64",
+  "addr": "your-wallet-address",
   "rpc": "https://octra.network"
 }
